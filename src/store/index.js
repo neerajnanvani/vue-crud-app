@@ -1,11 +1,14 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import {showToaster} from "../modules/toster";
 
 const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': import.meta.env.VITE_API_KEY
-  }
+    'Authorization': `${import.meta.env.VITE_API_TOKEN}`
+};
+
+const api = 'https://gorest.co.in/public/v2/users';
 
 export const useUsersStore = defineStore("users", {
     state: () => ({
@@ -21,12 +24,20 @@ export const useUsersStore = defineStore("users", {
         async loadUsers() {
             if(!this.users.length) {
                 try {
-
-                    const {data} = await axios.get('https://gorest.co.in/public/v2/users', headers);
-                    this.users = JSON.parse(JSON.stringify(data));
+                    const {data} = await axios.get(api);
+                    this.users = data;
                 } catch(error) {
-                    console.log(error)
+                    showToaster(error, "error", "bottom-center");
                 }
+            }
+        },
+        async createUser(userInfo) {
+            try {
+                const {data} = await axios.post(api, userInfo, {headers});
+                
+                this.users.push(data);
+            } catch(error) {
+                showToaster(error, "error", "bottom-center");
             }
         }
     }
