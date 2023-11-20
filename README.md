@@ -5,7 +5,7 @@ This is a app to test crud operations via vue.js and axios on a dummy api
 
 ```
 npm install
-``
+```
 
 ```
 npm run dev
