@@ -120,15 +120,18 @@ const submitData = async (e) => {
 
             if(route.name === "createUser") {
                 await store.createUser(user.value);
-                
-                showToaster("User created successfully", "success", "top-right");
+                setTimeout(() => {
+                showToaster("User created successfully", "success", "top-right")
+                },500);
+
             } else {
                 await store.updateUser(
                     user.value.id, 
                     {name:user.value.name, email: user.value.email, status: user.value.status}
                 );
-                
-                showToaster("User updated successfully", "success", "top-right");
+                setTimeout(() => {
+                    showToaster("User updated successfully", "success", "top-right")
+                }, 500);
             }
             
             router.push("/list")
