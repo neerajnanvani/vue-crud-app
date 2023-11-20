@@ -17,7 +17,9 @@ export const useUsersStore = defineStore("users", {
     getters: {
         getAllUsers: (state) => state.users,
         getUser: (state) => {
-            return (userId) => state.users.find((user) => user.id === userId);
+            return (userId) => state.users.find((user) => {
+                return user.id == Number(userId);
+            } );
         }
     },
     actions: {
@@ -36,6 +38,21 @@ export const useUsersStore = defineStore("users", {
                 const {data} = await axios.post(api, userInfo, {headers});
                 
                 this.users.push(data);
+            } catch(error) {
+                showToaster(error, "error", "bottom-center");
+            }
+        },
+        async updateUser(userId, userInfo) {
+            try {
+                const userIndex = this.users.findIndex((user) => user.id === userId);
+
+                if(!userIndex) {
+                    return;
+                }
+
+                await axios.patch(`${api}/${userId}`, userInfo, {headers});
+                
+                this.users[userIndex] = {...this.users[userIndex], ...userInfo};
             } catch(error) {
                 showToaster(error, "error", "bottom-center");
             }

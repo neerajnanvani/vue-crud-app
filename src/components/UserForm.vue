@@ -1,7 +1,7 @@
 <template>
     <div class="flex justify-center p-5 ">
         <form class="flex flex-col border border-gray-100 w-full rounded-lg p-10" @submit="submitData">
-            <div class="flex py-4">
+            <div class="flex md:flex-row flex-col py-4 gap-y-3 gap">
                 <label for="name" class="text-lg font-semibold w-1/4">
                     Name
                 </label>
@@ -9,11 +9,11 @@
                     type="text" 
                     name="name" 
                     v-model="user.name" 
-                    class="border border-gray-200 ml-3 w-3/4 rounded-md outline-none p-1 focus:border-purple-400"
+                    class="border border-gray-200 md:ml-3 md:w-3/4 rounded-md outline-none p-1 focus:border-purple-400"
                 />
             </div>
 
-            <div class="flex py-4"> 
+            <div v-if="route.name === 'createUser'" class="flex  md:flex-row flex-col py-4 gap-y-3 gap"> 
                 <label for="gender" class="text-lg font-semibold w-1/4">Gender</label>
                 <div class="px-4">
                     <input type="radio" name="gender" value="male" v-model="user.gender" class="accent-purple-700"/>
@@ -27,14 +27,14 @@
                 </div>
             </div>
 
-            <div class="flex py-4">
+            <div class="flex  md:flex-row flex-col py-4 gap-y-3 gap">
                 <label for="email" class="text-lg font-semibold w-1/4">Email</label>
                 <input type="email" name="email" v-model="user.email"
-                    class="border border-gray-200 ml-3 w-3/4 rounded-md outline-none p-1 focus:border-purple-400"
+                    class="border border-gray-200 md:ml-3 md:w-3/4 rounded-md outline-none p-1 focus:border-purple-400"
                 />
             </div>
 
-            <div class="flex py-4">    
+            <div class="flex  md:flex-row flex-col py-4 gap-y-3 gap">    
                 <label class="text-lg font-semibold w-1/4" for="status">Status</label>
                 <div class="px-4">
                     <input type="radio" name="status" value="active" v-model="user.status" class="accent-green-500" />
@@ -60,8 +60,8 @@
 </template>
 <script setup>
 import { useUsersStore } from "../store";
-import {ref, onMounted} from "vue";
-import {showToaster} from "../modules/toster";
+import { ref, onMounted } from "vue";
+import { showToaster } from "../modules/toster";
 import { useRouter, useRoute } from "vue-router";
 
 const props = defineProps({
@@ -71,6 +71,7 @@ const props = defineProps({
 const store = useUsersStore();
 const router = useRouter();
 const route = useRoute();
+const currentPageType = ref("create");
 
 const user = ref({
     name: "",
@@ -80,7 +81,8 @@ const user = ref({
 });
 
 onMounted(() => {
-    if(route.path !== '/create') {
+
+    if(route.name !== 'createUser') {
         user.value = props.userInfo;
     }
 })
@@ -104,14 +106,21 @@ const submitData = async (e) => {
     const isformValidated = validate();
 
     if(isformValidated) {
-        try {
-            await store.createUser(user.value);
-            
-            showToaster("User created successfully", "success", "top-right");
+        try {  
+
+            if(route.name === "createUser") {
+                await store.createUser(user.value);
+                
+                showToaster("User created successfully", "success", "top-right");
+            } else {
+                await store.updateUser(user.value.id, {name:user.value.name, email: user.value.email, status: user.value.status});
+                
+                showToaster("User updated successfully", "success", "top-right");
+            }
             
             router.push("/list")
         } catch(error) {
-            console.log(error)
+            showToaster(error, "error", "bottom-right")
         }
 
     }

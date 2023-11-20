@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full h-full items-center justify-center p-10 gap-6">
+    <div class="flex md:flex-row flex-col w-full h-full items-center justify-center md:p-10 p-4 gap-6">
         <home-card
             link-text="Create User"
             link="/create"

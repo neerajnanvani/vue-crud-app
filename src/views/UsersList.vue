@@ -3,6 +3,7 @@
         <UserCard 
             v-for="user in users" 
             :key="user.id" 
+            :user-id="user.id"
             :name="user.name"
             :gender="user.gender"
             :mail-id="user.email"
@@ -21,6 +22,5 @@ const users = ref([]);
 onMounted(async () => {
     await store.loadUsers();
     users.value = store.getAllUsers;
-
 })
 </script>
