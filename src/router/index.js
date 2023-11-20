@@ -6,6 +6,7 @@ import NotFound from "../views/404.vue";
 
 import { createRouter, createWebHistory } from 'vue-router';
 
+// all routes 
 const routes = [
     { 
         path: '/',

@@ -11,6 +11,13 @@ const positions = {
     'bottom-right' : toast.POSITION.BOTTOM_RIGHT,
 }
 
+/**
+ * Function to activiate toater from any component globally
+ * 
+ * @param {sting} message - The message to show in toaster
+ * @param {string} type - The type of message like error, success, info, warn
+ * @param {string} position - the position for the toaster like top-right, bottom-center, etc
+ */
 export const showToaster = (message, type, position) => {
 
     const exactPosition = positions[position];

@@ -71,8 +71,8 @@ const props = defineProps({
 const store = useUsersStore();
 const router = useRouter();
 const route = useRoute();
-const currentPageType = ref("create");
 
+// reactive data property to store user values
 const user = ref({
     name: "",
     email: "",
@@ -80,13 +80,18 @@ const user = ref({
     status: "",
 });
 
+/**
+ * On component mounted update user object values if current route is update user page
+ */
 onMounted(() => {
-
-    if(route.name !== 'createUser') {
+    if(route.name === 'updateUser') {
         user.value = props.userInfo;
     }
 })
 
+/**
+ * Method to validate form values that is any empty value available
+ */
 const validate = () => {
     const formValues = Object.keys(user.value);
     for(let i = 0; i < formValues.length; ++i) {
@@ -99,6 +104,11 @@ const validate = () => {
     return true;
 }
 
+/**
+ * Method to submit data to corresponding api
+ * 
+ * @param {Event} e - The form submit event
+ */
 const submitData = async (e) => {
 
     e.preventDefault();
@@ -113,7 +123,10 @@ const submitData = async (e) => {
                 
                 showToaster("User created successfully", "success", "top-right");
             } else {
-                await store.updateUser(user.value.id, {name:user.value.name, email: user.value.email, status: user.value.status});
+                await store.updateUser(
+                    user.value.id, 
+                    {name:user.value.name, email: user.value.email, status: user.value.status}
+                );
                 
                 showToaster("User updated successfully", "success", "top-right");
             }

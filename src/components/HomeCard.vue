@@ -15,6 +15,8 @@
 </template>
 <script setup>
 import {RouterLink} from "vue-router"
+
+//props to be used to display components
 defineProps({
     icon: {
         type: Function,

@@ -19,6 +19,10 @@ import { useUsersStore } from "../store";
 const store = useUsersStore();
 
 const users = ref([]);
+
+/**
+ * On component mounted load all users 
+ */
 onMounted(async () => {
     await store.loadUsers();
     users.value = store.getAllUsers;

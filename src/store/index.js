@@ -11,9 +11,11 @@ const headers = {
 const api = 'https://gorest.co.in/public/v2/users';
 
 export const useUsersStore = defineStore("users", {
+    // State to store the users
     state: () => ({
         users: [],
     }),
+    // Getters to get all users or specific user
     getters: {
         getAllUsers: (state) => state.users,
         getUser: (state) => {
@@ -22,6 +24,7 @@ export const useUsersStore = defineStore("users", {
             } );
         }
     },
+    // actions to call api's and load, create and update users
     actions: {
         async loadUsers() {
             if(!this.users.length) {

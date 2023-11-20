@@ -19,6 +19,9 @@ const store = useUsersStore();
 
 const currentUserData = ref(null);
 
+/**
+ * In component mounted check is any user exist by the given id
+ */
 onMounted(async () => {
     const id = route.params.id;
 

@@ -1,5 +1,6 @@
 <template>
     <div class="flex space-x-4 p-4 items-center">
+        <!-- Two breadcrumbs to show now like home and next route -->
         <router-link to="/">
             <HomeIcon class="w-6 h-6 hover:text-blue-800" />
         </router-link>
@@ -18,6 +19,9 @@ import {computed} from "vue";
 
 const route = useRoute();
 
+/**
+ * Computed property to compute current route name
+ */
 const currentRouteName = computed(() => {
    return route.name ? route.name.replace(/([A-Z])/g, ' $1')
     // uppercase the first character
